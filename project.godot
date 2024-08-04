@@ -11,8 +11,25 @@ config_version=5
 [application]
 
 config/name="ProjectPrelude"
+run/main_scene="res://main/music_game.tscn"
 config/features=PackedStringArray("4.2", "Mobile")
 config/icon="res://icon.svg"
+
+[autoload]
+
+GlobalManager="*res://singletons/global_manager.gd"
+GodotUtils="*res://singletons/godot_utils.gd"
+ScenePreloader="*res://singletons/scene_preloader.gd"
+SignalManager="*res://singletons/signal_manager.gd"
+SortingFunctions="*res://singletons/sorting_functions.gd"
+PlayAreaUtils="*res://singletons/play_area_utils.gd"
+
+[display]
+
+window/size/viewport_width=1920
+window/size/viewport_height=1080
+window/stretch/mode="canvas_items"
+window/stretch/aspect="expand"
 
 [rendering]
 
