@@ -1,11 +1,6 @@
 extends Node
 
-
-# Called when the node enters the scene tree for the first time.
-func _ready():
-	pass # Replace with function body.
-
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
-	pass
+signal on_time_auto_updated
+signal on_time_manual_updated
+signal on_pause_toggled
+signal on_pause_button_pressed

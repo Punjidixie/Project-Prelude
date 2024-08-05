@@ -1,12 +1,15 @@
-[gd_scene load_steps=4 format=3 uid="uid://c6uwi81cfj8f"]
+[gd_scene load_steps=7 format=3 uid="uid://c6uwi81cfj8f"]
 
 [ext_resource type="Script" path="res://main/music_game.gd" id="1_duima"]
 [ext_resource type="Texture2D" uid="uid://dxx26pwilrs2y" path="res://assets/backgrounds/paper_texture.JPG" id="1_uvog2"]
 [ext_resource type="Texture2D" uid="uid://chvmosrpgovmv" path="res://assets/notes/horizontal_line.png" id="2_v4eb4"]
+[ext_resource type="Script" path="res://main/time_slider.gd" id="4_ojbfm"]
+[ext_resource type="Script" path="res://ui/pause_button.gd" id="5_56363"]
+[ext_resource type="Script" path="res://ui/time_text.gd" id="6_nul4s"]
 
 [node name="MusicGame" type="Node" node_paths=PackedStringArray("play_area", "notes_container")]
 script = ExtResource("1_duima")
-play_area = NodePath("CanvasLayer/PlayArea")
+play_area = NodePath("CanvasLayer/Control/PlayArea")
 notes_container = NodePath("Notes")
 
 [node name="Notes" type="Node" parent="."]
@@ -24,7 +27,8 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="TextureRect" type="TextureRect" parent="CanvasLayer"]
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer/Control"]
+layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -34,8 +38,8 @@ texture = ExtResource("1_uvog2")
 expand_mode = 1
 stretch_mode = 1
 
-[node name="PlayArea" type="Control" parent="CanvasLayer"]
-layout_mode = 3
+[node name="PlayArea" type="Control" parent="CanvasLayer/Control"]
+layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -43,8 +47,9 @@ offset_bottom = -174.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="DefaultLine" type="TextureRect" parent="CanvasLayer"]
+[node name="DefaultLine" type="TextureRect" parent="CanvasLayer/Control"]
 modulate = Color(0, 0, 0, 1)
+layout_mode = 1
 anchors_preset = 12
 anchor_top = 1.0
 anchor_right = 1.0
@@ -56,3 +61,44 @@ grow_vertical = 0
 texture = ExtResource("2_v4eb4")
 expand_mode = 1
 stretch_mode = 1
+
+[node name="ControlPanel" type="Control" parent="CanvasLayer/Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TimeSlider" type="HSlider" parent="CanvasLayer/Control/ControlPanel"]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = 50.0
+offset_top = 18.0
+offset_right = -20.0
+offset_bottom = 34.0
+grow_horizontal = 2
+script = ExtResource("4_ojbfm")
+
+[node name="PauseButton" type="Button" parent="CanvasLayer/Control/ControlPanel"]
+layout_mode = 0
+offset_left = 5.0
+offset_top = 10.0
+offset_right = 39.0
+offset_bottom = 42.0
+text = ">"
+script = ExtResource("5_56363")
+
+[node name="RichTextLabel" type="RichTextLabel" parent="CanvasLayer/Control/ControlPanel"]
+modulate = Color(0, 0, 0, 1)
+layout_mode = 0
+offset_left = 7.0
+offset_top = 50.0
+offset_right = 164.0
+offset_bottom = 90.0
+text = "0.00"
+script = ExtResource("6_nul4s")
+
+[connection signal="value_changed" from="CanvasLayer/Control/ControlPanel/TimeSlider" to="CanvasLayer/Control/ControlPanel/TimeSlider" method="_on_value_changed"]
+[connection signal="pressed" from="CanvasLayer/Control/ControlPanel/PauseButton" to="CanvasLayer/Control/ControlPanel/PauseButton" method="_on_pressed"]

@@ -34,3 +34,6 @@ func get_custom_delta_play_position(delta_world_position: Vector2, reference_con
 func get_custom_delta_world_position(delta_play_position: Vector2, reference_control: Control, scale_vector: Vector2) -> Vector2:
 	var delta_play_position_y_inv = Vector2(1, -1) * delta_play_position
 	return reference_control.size * delta_play_position_y_inv / scale_vector
+
+### OTHERS ###
+
