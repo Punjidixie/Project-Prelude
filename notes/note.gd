@@ -10,6 +10,7 @@ enum NoteType {CLICK, HOLD, DRAG, FLICK}
 
 @export var note_events_container: Node
 @export var note_body: NoteBody
+@export var note_effects: NoteEffects
 
 @export var end_event: EndEvent
 
@@ -36,6 +37,7 @@ func on_time_updated():
 func get_hit():
 	is_hit = true
 	hit_time = GlobalManager.current_time
+	note_effects.spawn_particles(note_body.play_position)
 
 func update():
 	# Calculates note body position
