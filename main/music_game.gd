@@ -22,9 +22,11 @@ func auto_increment_time(delta):
 	SignalManager.on_time_auto_updated.emit()
 
 func add_note():
-	var note: Note = ScenePreloader.base_note.instantiate()
-	notes_container.add_child(note)
+	var hold_note: Note = ScenePreloader.base_hold_note.instantiate()
+	notes_container.add_child(hold_note)
 
 func on_pause_button_pressed():
 	GlobalManager.is_paused = !GlobalManager.is_paused
 	SignalManager.on_pause_toggled.emit()
+	for note: Note in notes_container.get_children():
+		note.reset()

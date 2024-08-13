@@ -1,0 +1,204 @@
+[gd_scene load_steps=16 format=3 uid="uid://gt2gylujfv2t"]
+
+[ext_resource type="Script" path="res://notes/hold_note.gd" id="1_26rfv"]
+[ext_resource type="Script" path="res://notes/note_checkpoint.gd" id="2_swrln"]
+[ext_resource type="Script" path="res://notes/note_events/appear_event.gd" id="3_bifoi"]
+[ext_resource type="PackedScene" uid="uid://duwfov6qj7bl5" path="res://notes/note_events/move_event.tscn" id="4_npdic"]
+[ext_resource type="Script" path="res://notes/note_events/end_event.gd" id="5_851dw"]
+[ext_resource type="Script" path="res://notes/hold_note_body.gd" id="6_2trin"]
+[ext_resource type="Script" path="res://notes/hitbox.gd" id="7_jwpl5"]
+[ext_resource type="Texture2D" uid="uid://bmgpw04djgigb" path="res://assets/notes/note_lines.png" id="8_ahhpj"]
+[ext_resource type="Texture2D" uid="uid://cwetnomiu1b5x" path="res://assets/notes/note_lid.png" id="9_dg3fc"]
+[ext_resource type="Texture2D" uid="uid://3d2aodrkkwgu" path="res://assets/notes/vertical_line.png" id="10_bsbqp"]
+[ext_resource type="Script" path="res://notes/note_effects.gd" id="10_maeob"]
+[ext_resource type="Texture2D" uid="uid://chvmosrpgovmv" path="res://assets/notes/horizontal_line.png" id="11_75ec0"]
+
+[sub_resource type="Animation" id="Animation_07vnm"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Hitbox:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(0, 0, 0, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_gdssq"]
+resource_name = "note_animation"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Hitbox:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(0.901124, 0.656453, 0, 1), Color(0.922064, 0.000155559, 0.768216, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_uti7x"]
+_data = {
+"RESET": SubResource("Animation_07vnm"),
+"note_animation": SubResource("Animation_gdssq")
+}
+
+[node name="TestHoldNote" type="Node" node_paths=PackedStringArray("note_events_container", "note_body", "note_effects", "end_event")]
+script = ExtResource("1_26rfv")
+hold_time = 30.0
+note_size = 60.0
+note_type = 1
+note_events_container = NodePath("Events")
+note_body = NodePath("HoldNoteBody")
+note_effects = NodePath("NoteEffects")
+end_event = NodePath("Events/EndEvent")
+
+[node name="Checkpoints" type="Node" parent="."]
+
+[node name="StartCheckpoint" type="Node2D" parent="Checkpoints"]
+script = ExtResource("2_swrln")
+play_position = Vector2(240, 540)
+
+[node name="EndCheckpoint" type="Node2D" parent="Checkpoints"]
+script = ExtResource("2_swrln")
+target_time = 1.0
+play_position = Vector2(240, 0)
+
+[node name="Events" type="Node" parent="."]
+
+[node name="AppearEvent" type="Node" parent="Events" node_paths=PackedStringArray("start_checkpoint")]
+script = ExtResource("3_bifoi")
+start_checkpoint = NodePath("../../Checkpoints/StartCheckpoint")
+
+[node name="MoveEvent" parent="Events" node_paths=PackedStringArray("start_checkpoint", "destination_checkpoint") instance=ExtResource("4_npdic")]
+start_checkpoint = NodePath("../../Checkpoints/StartCheckpoint")
+destination_checkpoint = NodePath("../../Checkpoints/EndCheckpoint")
+
+[node name="EndEvent" type="Node" parent="Events" node_paths=PackedStringArray("end_checkpoint")]
+script = ExtResource("5_851dw")
+end_checkpoint = NodePath("../../Checkpoints/EndCheckpoint")
+end_speed = 20.0
+
+[node name="HoldNoteBody" type="Node2D" parent="." node_paths=PackedStringArray("hold_body", "body", "note", "animation_player")]
+script = ExtResource("6_2trin")
+hold_body = NodePath("Hitbox/HoldPart")
+body = NodePath("Hitbox")
+note = NodePath("..")
+animation_player = NodePath("AnimationPlayer")
+
+[node name="Hitbox" type="Control" parent="HoldNoteBody"]
+modulate = Color(0, 0, 0, 1)
+layout_mode = 3
+anchors_preset = 0
+offset_left = -90.0
+offset_top = -26.0
+offset_right = 90.0
+offset_bottom = 26.0
+script = ExtResource("7_jwpl5")
+
+[node name="Midsection" type="TextureRect" parent="HoldNoteBody/Hitbox"]
+layout_mode = 1
+anchors_preset = 14
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = 42.0
+offset_top = -27.0
+offset_right = -51.0
+offset_bottom = 27.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("8_ahhpj")
+expand_mode = 1
+stretch_mode = 1
+
+[node name="LeftLid" type="TextureRect" parent="HoldNoteBody/Hitbox"]
+layout_mode = 0
+offset_top = -1.0
+offset_right = 53.0
+offset_bottom = 53.0
+texture = ExtResource("9_dg3fc")
+
+[node name="RightLid" type="TextureRect" parent="HoldNoteBody/Hitbox"]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 1.0
+offset_right = 53.0
+offset_bottom = 55.0
+grow_horizontal = 0
+grow_vertical = 0
+scale = Vector2(-1, -1)
+texture = ExtResource("9_dg3fc")
+
+[node name="HoldPart" type="Control" parent="HoldNoteBody/Hitbox"]
+layout_mode = 1
+anchors_preset = 14
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_top = -121.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="LeftLine" type="TextureRect" parent="HoldNoteBody/Hitbox/HoldPart"]
+layout_mode = 1
+anchors_preset = 9
+anchor_bottom = 1.0
+offset_top = 6.0
+offset_right = 12.0
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("10_bsbqp")
+expand_mode = 1
+stretch_mode = 1
+
+[node name="RightLine" type="TextureRect" parent="HoldNoteBody/Hitbox/HoldPart"]
+layout_mode = 1
+anchors_preset = 11
+anchor_left = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -13.0
+offset_top = 5.0
+offset_right = -1.0
+grow_horizontal = 0
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("10_bsbqp")
+expand_mode = 1
+stretch_mode = 1
+
+[node name="TopLine" type="TextureRect" parent="HoldNoteBody/Hitbox/HoldPart"]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = 1.0
+offset_right = -3.0
+offset_bottom = 12.0
+grow_horizontal = 2
+mouse_filter = 2
+texture = ExtResource("11_75ec0")
+expand_mode = 1
+stretch_mode = 1
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="HoldNoteBody"]
+libraries = {
+"": SubResource("AnimationLibrary_uti7x")
+}
+
+[node name="NoteEffects" type="Node2D" parent="." node_paths=PackedStringArray("note")]
+script = ExtResource("10_maeob")
+note = NodePath("..")
+particle_gap = 16.0
+spread = 45.0

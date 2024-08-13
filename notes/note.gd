@@ -29,6 +29,9 @@ func _ready():
 	update_visibility()
 	update()
 
+func reset():
+	var is_hit: bool = false
+	on_time_updated()
 
 func on_time_updated():
 	update_visibility()
@@ -42,10 +45,11 @@ func get_hit():
 func update():
 	# Calculates note body position
 	if is_in_time:
-		var time = GlobalManager.current_time
-		var event = get_event_at_time(time)
-		var play_position = event.get_notebody_play_position(time - start_time)
-		note_body.set_play_position(play_position)
+		if not is_hit:
+			var time = GlobalManager.current_time
+			var event = get_event_at_time(time)
+			var play_position = event.get_notebody_play_position(time - start_time)
+			note_body.set_play_position(play_position)
 		note_body.update_appearance()
 
 func update_visibility():
