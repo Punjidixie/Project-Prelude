@@ -4,3 +4,4 @@ signal on_time_auto_updated
 signal on_time_manual_updated
 signal on_pause_toggled
 signal on_pause_button_pressed
+signal on_time_slider_drag_started

@@ -25,12 +25,19 @@ func _ready():
 	SignalManager.on_time_auto_updated.connect(on_time_updated)
 	SignalManager.on_time_manual_updated.connect(on_time_updated)
 	
+	initialize_connections()
+	
 	note_body.update_size()
 	update_visibility()
 	update()
 
+func initialize_connections():
+	for event in get_note_events():
+		event.note = self
+
 func reset():
-	var is_hit: bool = false
+	is_hit = false
+	note_body.reset()
 	on_time_updated()
 
 func on_time_updated():
@@ -45,12 +52,14 @@ func get_hit():
 func update():
 	# Calculates note body position
 	if is_in_time:
-		if not is_hit:
-			var time = GlobalManager.current_time
-			var event = get_event_at_time(time)
-			var play_position = event.get_notebody_play_position(time - start_time)
-			note_body.set_play_position(play_position)
+		if not is_hit: update_position()
 		note_body.update_appearance()
+
+func update_position():
+	var time = GlobalManager.current_time
+	var event = get_event_at_time(time)
+	var play_position = event.get_notebody_play_position(time - start_time)
+	note_body.set_play_position(play_position)
 
 func update_visibility():
 	var end_offset = end_event.get_ending_lifetime()

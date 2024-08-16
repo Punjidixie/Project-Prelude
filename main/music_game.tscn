@@ -100,5 +100,6 @@ offset_bottom = 90.0
 text = "0.00"
 script = ExtResource("6_nul4s")
 
+[connection signal="drag_started" from="CanvasLayer/Control/ControlPanel/TimeSlider" to="CanvasLayer/Control/ControlPanel/TimeSlider" method="_on_drag_started"]
 [connection signal="value_changed" from="CanvasLayer/Control/ControlPanel/TimeSlider" to="CanvasLayer/Control/ControlPanel/TimeSlider" method="_on_value_changed"]
 [connection signal="pressed" from="CanvasLayer/Control/ControlPanel/PauseButton" to="CanvasLayer/Control/ControlPanel/PauseButton" method="_on_pressed"]

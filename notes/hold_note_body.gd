@@ -6,8 +6,22 @@ class_name HoldNoteBody
 
 func _ready():
 	super._ready()
+	
+	body.on_released.connect(on_body_released)
 	get_tree().get_root().size_changed.connect(update_height)
 
+func on_body_pressed():
+	if not note.is_hit: # prevent double presses
+		note.get_hit()
+		animation_player.play("note_animation")
+
+func update_appearance():
+	super.update_appearance()
+	update_height()
+
+func on_body_released():
+	(note as HoldNote).get_released()
+	body.mouse_filter = Control.MOUSE_FILTER_IGNORE
 
 func update_height():
 	var hold_note := note as HoldNote
@@ -32,7 +46,4 @@ func update_height():
 	hold_body.position.y = (body.size.y / 2) - hold_body.size.y # coords seem to be in local scale
 	# x position is anchored to the body as 0.
 
-func update_appearance():
-	super.update_appearance()
-	update_height()
 	

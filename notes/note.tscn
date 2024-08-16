@@ -80,7 +80,7 @@ destination_checkpoint = NodePath("../../Checkpoints/EndCheckpoint")
 [node name="EndEvent" type="Node" parent="Events" node_paths=PackedStringArray("end_checkpoint")]
 script = ExtResource("4_gjrhd")
 end_checkpoint = NodePath("../../Checkpoints/EndCheckpoint")
-end_speed = 20.0
+end_speed = 540.0
 
 [node name="NoteBody" type="Node2D" parent="." node_paths=PackedStringArray("body", "note", "animation_player")]
 script = ExtResource("2_ram40")
@@ -90,12 +90,13 @@ animation_player = NodePath("AnimationPlayer")
 
 [node name="Hitbox" type="Control" parent="NoteBody"]
 modulate = Color(0, 0, 0, 1)
+custom_minimum_size = Vector2(2.08165e-12, 200)
 layout_mode = 3
 anchors_preset = 0
 offset_left = -90.0
-offset_top = -26.0
+offset_top = -100.0
 offset_right = 90.0
-offset_bottom = 26.0
+offset_bottom = 100.0
 script = ExtResource("7_yw0yk")
 
 [node name="Midsection" type="TextureRect" parent="NoteBody/Hitbox"]
@@ -115,24 +116,29 @@ expand_mode = 1
 stretch_mode = 1
 
 [node name="LeftLid" type="TextureRect" parent="NoteBody/Hitbox"]
-layout_mode = 0
-offset_top = -1.0
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_top = -27.0
 offset_right = 53.0
-offset_bottom = 53.0
+offset_bottom = 27.0
+grow_vertical = 2
 texture = ExtResource("3_gnq7d")
 
 [node name="RightLid" type="TextureRect" parent="NoteBody/Hitbox"]
 layout_mode = 1
-anchors_preset = 3
+anchors_preset = 6
 anchor_left = 1.0
-anchor_top = 1.0
+anchor_top = 0.5
 anchor_right = 1.0
-anchor_bottom = 1.0
-offset_top = 1.0
-offset_right = 53.0
-offset_bottom = 55.0
+anchor_bottom = 0.5
+offset_left = -3.0
+offset_top = 27.0
+offset_right = 50.0
+offset_bottom = 81.0
 grow_horizontal = 0
-grow_vertical = 0
+grow_vertical = 2
 scale = Vector2(-1, -1)
 texture = ExtResource("3_gnq7d")
 

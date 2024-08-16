@@ -7,6 +7,7 @@ extends Node
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	SignalManager.on_pause_button_pressed.connect(on_pause_button_pressed)
+	SignalManager.on_time_slider_drag_started.connect(pause)
 	GlobalManager.play_area = play_area
 	add_note()
 
@@ -24,9 +25,17 @@ func auto_increment_time(delta):
 func add_note():
 	var hold_note: Note = ScenePreloader.base_hold_note.instantiate()
 	notes_container.add_child(hold_note)
+	
+	#var note: Note = ScenePreloader.base_note.instantiate()
+	#notes_container.add_child(note)
 
 func on_pause_button_pressed():
 	GlobalManager.is_paused = !GlobalManager.is_paused
+	if GlobalManager.is_paused: pause()
+
+
+func pause():
+	GlobalManager.is_paused = true
 	SignalManager.on_pause_toggled.emit()
 	for note: Note in notes_container.get_children():
 		note.reset()

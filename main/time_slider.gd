@@ -30,5 +30,4 @@ func _on_value_changed(value):
 		SignalManager.on_time_manual_updated.emit()
 
 func _on_drag_started():
-	#SignalManager.on_time_slider_drag_started.emit()
-	pass
+	SignalManager.on_time_slider_drag_started.emit()

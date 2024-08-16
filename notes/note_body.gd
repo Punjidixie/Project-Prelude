@@ -9,6 +9,10 @@ class_name NoteBody
 func _ready():
 	super._ready()
 	body.on_pressed.connect(on_body_pressed)
+
+func reset():
+	animation_player.play("RESET")
+	body.mouse_filter = Control.MOUSE_FILTER_STOP
 	
 func update_size():
 	var world_size = PlayAreaUtils.get_delta_world_position(Vector2.ONE * note.note_size)
@@ -18,9 +22,10 @@ func update_size():
 
 func on_body_pressed():
 	note.get_hit()
-	animation_player.play("note_animation", -1, 0)
+	animation_player.play("note_animation")
+	body.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	
 
 func update_appearance():
-	if note.is_hit:
-		animation_player.seek(GlobalManager.current_time - note.hit_time)
+	pass
 	
