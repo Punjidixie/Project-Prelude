@@ -3,7 +3,7 @@ extends Node
 class_name Note
 
 enum NoteType {CLICK, HOLD, DRAG, FLICK}
-enum NoteResult {MISS, PERFECT, GOOD, BAD}
+enum NoteResult {MISS, BAD, GOOD, PERFECT}
 
 @export var start_time: float
 @export var note_size: float
