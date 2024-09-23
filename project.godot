@@ -23,6 +23,7 @@ ScenePreloader="*res://singletons/scene_preloader.gd"
 SignalManager="*res://singletons/signal_manager.gd"
 SortingFunctions="*res://singletons/sorting_functions.gd"
 PlayAreaUtils="*res://singletons/play_area_utils.gd"
+ScoringUtils="*res://singletons/scoring_utils.gd"
 
 [display]
 

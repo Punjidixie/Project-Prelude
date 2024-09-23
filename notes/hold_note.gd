@@ -2,33 +2,39 @@ extends Note
 
 class_name HoldNote
 
+enum HoldStatus {INITIAL, HELD, RELEASED}
 @export var hold_time: float # max hold time
 
-var lift_time: float
-var is_held: float = false
+var hold_status: HoldStatus = HoldStatus.INITIAL
 
-# DIFF: note body height needs to be calculated too
-func _ready():
-	super._ready()
-
+func reset():
+	hold_status = HoldStatus.INITIAL
+	super.reset()
+	
 func update():
+	# Calculates note body position
 	if is_in_time:
 		update_position()
 		note_body.update_appearance()
 
-func reset():
-	is_held = false
-	is_hit = false # super
-	note_body.reset() # super
-	on_time_updated()
-	
+func start_hold():
+	hold_status = HoldStatus.HELD
+	note_effects.play_looping_effects(note_result)
+
+func end_hold():
+	hold_status = HoldStatus.RELEASED
+	get_hit()
 	
 func get_hit():
-	super.get_hit()
-	is_held = true
+	is_hit = true
+	hit_time = GlobalManager.current_time
+	
+	note_result = ScoringUtils.get_release_note_result(hit_time - (start_time + hold_time))
+	note_effects.play_end_effects(note_result)
+	
+	if note_result == NoteResult.PERFECT:
+		note_body.set_play_position(end_event.end_checkpoint.play_position)
 
-func get_released():
-	lift_time = GlobalManager.current_time
-	is_held = false
+
 	
 

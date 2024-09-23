@@ -3,6 +3,7 @@ extends Node
 class_name Note
 
 enum NoteType {CLICK, HOLD, DRAG, FLICK}
+enum NoteResult {MISS, PERFECT, GOOD, BAD}
 
 @export var start_time: float
 @export var note_size: float
@@ -17,6 +18,7 @@ enum NoteType {CLICK, HOLD, DRAG, FLICK}
 var is_in_time: bool = true
 
 var hit_time: float = 0
+var note_result: NoteResult = NoteResult.MISS
 var is_hit: bool = false
 var hit_position: Vector2
 
@@ -37,6 +39,7 @@ func initialize_connections():
 
 func reset():
 	is_hit = false
+	note_result = NoteResult.MISS
 	note_body.reset()
 	on_time_updated()
 
@@ -44,10 +47,16 @@ func on_time_updated():
 	update_visibility()
 	update()
 
+# Note ends. Score is calculated.
 func get_hit():
 	is_hit = true
 	hit_time = GlobalManager.current_time
-	note_effects.spawn_particles(note_body.play_position)
+	
+	note_result = ScoringUtils.get_note_result(hit_time - start_time)
+	note_effects.play_end_effects(note_result)
+	
+	if note_result == NoteResult.PERFECT:
+		note_body.set_play_position(end_event.end_checkpoint.play_position)
 
 func update():
 	# Calculates note body position

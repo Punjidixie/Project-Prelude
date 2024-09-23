@@ -27,7 +27,7 @@ tracks/0/keys = {
 }
 
 [sub_resource type="Animation" id="Animation_gdssq"]
-resource_name = "note_animation"
+resource_name = "end"
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -44,16 +44,17 @@ tracks/0/keys = {
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_uti7x"]
 _data = {
 "RESET": SubResource("Animation_07vnm"),
-"note_animation": SubResource("Animation_gdssq")
+"end": SubResource("Animation_gdssq")
 }
 
 [node name="TestNote" type="Node" node_paths=PackedStringArray("note_events_container", "note_body", "note_effects", "end_event")]
 script = ExtResource("1_3whf4")
 start_time = -0.5
 note_size = 60.0
+note_type = null
 note_events_container = NodePath("Events")
 note_body = NodePath("NoteBody")
-note_effects = NodePath("NoteEffects")
+note_effects = NodePath("NoteBody/NoteEffects")
 end_event = NodePath("Events/EndEvent")
 
 [node name="Checkpoints" type="Node" parent="."]
@@ -82,11 +83,17 @@ script = ExtResource("4_gjrhd")
 end_checkpoint = NodePath("../../Checkpoints/EndCheckpoint")
 end_speed = 540.0
 
-[node name="NoteBody" type="Node2D" parent="." node_paths=PackedStringArray("body", "note", "animation_player")]
+[node name="NoteBody" type="Node2D" parent="." node_paths=PackedStringArray("hitbox", "note", "animation_player")]
 script = ExtResource("2_ram40")
-body = NodePath("Hitbox")
+hitbox = NodePath("Hitbox")
 note = NodePath("..")
 animation_player = NodePath("AnimationPlayer")
+
+[node name="NoteEffects" type="Node2D" parent="NoteBody" node_paths=PackedStringArray("note")]
+script = ExtResource("10_vn8id")
+note = NodePath("../..")
+particle_gap = 16.0
+spread = 45.0
 
 [node name="Hitbox" type="Control" parent="NoteBody"]
 modulate = Color(0, 0, 0, 1)
@@ -146,9 +153,3 @@ texture = ExtResource("3_gnq7d")
 libraries = {
 "": SubResource("AnimationLibrary_uti7x")
 }
-
-[node name="NoteEffects" type="Node2D" parent="." node_paths=PackedStringArray("note")]
-script = ExtResource("10_vn8id")
-note = NodePath("..")
-particle_gap = 16.0
-spread = 45.0

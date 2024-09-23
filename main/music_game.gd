@@ -26,8 +26,8 @@ func add_note():
 	var hold_note: Note = ScenePreloader.base_hold_note.instantiate()
 	notes_container.add_child(hold_note)
 	
-	#var note: Note = ScenePreloader.base_note.instantiate()
-	#notes_container.add_child(note)
+	var note: Note = ScenePreloader.base_note.instantiate()
+	notes_container.add_child(note)
 
 func on_pause_button_pressed():
 	GlobalManager.is_paused = !GlobalManager.is_paused
