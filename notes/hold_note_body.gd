@@ -3,6 +3,7 @@ extends NoteBody
 class_name HoldNoteBody
 
 @export var hold_body: Control
+var ended = false
 
 func _ready():
 	super._ready()
@@ -10,12 +11,22 @@ func _ready():
 	hitbox.on_released.connect(on_body_released)
 	get_tree().get_root().size_changed.connect(update_height)
 
+func reset():
+	super.reset()
+	ended = false
+
 func _process(delta):
 	var hold_note := note as HoldNote
-	var timed_out = GlobalManager.current_time > (hold_note.end_event.start_time + hold_note.hold_time)
-	if hold_note.hold_status == HoldNote.HoldStatus.HELD and timed_out:
-		on_body_released()
-		
+	
+	# If not ended and timed out
+	if not ended and GlobalManager.current_time > (hold_note.end_event.start_time + hold_note.hold_time):
+		ended = true
+		match hold_note.hold_status:
+			HoldNote.HoldStatus.HELD:
+				on_body_released()
+			HoldNote.HoldStatus.RELEASED:
+				animation_player.play("imperfect_ending")
+	
 func on_body_pressed():
 	var hold_note := note as HoldNote
 	if hold_note.hold_status == HoldNote.HoldStatus.INITIAL:
@@ -28,11 +39,13 @@ func on_body_released():
 		hold_note.end_hold()
 		hitbox.mouse_filter = Control.MOUSE_FILTER_IGNORE
 
+### TO BE CALLED BACK FROM HOLDNOTE ###
 func imperfect_release():
-	animation_player.play("imperfect_released") # Colors dimming
+	animation_player.play("imperfect_release") # Colors dimming
 
 func perfect_release():
-	animation_player.play("perfect_released") # Colors fading out
+	ended = true
+	animation_player.play("perfect_ending") # Colors fading out, ending beautifully
 
 func update_appearance():
 	super.update_appearance()

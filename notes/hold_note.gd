@@ -19,7 +19,9 @@ func update():
 
 func start_hold():
 	hold_status = HoldStatus.HELD
-	note_result = ScoringUtils.get_release_note_result(GlobalManager.current_time - start_time)
+	
+	var target_time = end_event.start_time
+	note_result = ScoringUtils.get_note_result(GlobalManager.current_time - target_time)
 	note_effects.play_looping_effects(note_result)
 
 func end_hold():
@@ -31,12 +33,15 @@ func get_hit():
 	is_hit = true
 	hit_time = GlobalManager.current_time
 	
-	var new_note_result = ScoringUtils.get_release_note_result(hit_time - (start_time + hold_time))
-	
+	var target_time = end_event.start_time + hold_time
+	var new_note_result = ScoringUtils.get_release_note_result(hit_time - target_time)
+
 	note_result = min(note_result, new_note_result)
 	
-	if note_result == NoteResult.PERFECT: hold_note_body.perfect_release()
-	else: hold_note_body.imperfect_release()
+	if note_result == NoteResult.PERFECT:
+		hold_note_body.perfect_release()
+	else:
+		hold_note_body.imperfect_release()
 	
 	note_effects.play_end_effects(note_result)
 	

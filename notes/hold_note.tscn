@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://gt2gylujfv2t"]
+[gd_scene load_steps=19 format=3 uid="uid://gt2gylujfv2t"]
 
 [ext_resource type="Script" path="res://notes/hold_note.gd" id="1_26rfv"]
 [ext_resource type="Script" path="res://notes/note_checkpoint.gd" id="2_swrln"]
@@ -28,21 +28,6 @@ tracks/0/keys = {
 "values": [Color(0, 0, 0, 1)]
 }
 
-[sub_resource type="Animation" id="Animation_bknd2"]
-resource_name = "end"
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Hitbox:modulate")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 1),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [Color(0.901124, 0.656453, 0, 1), Color(0.922064, 0.000155559, 0.768216, 0)]
-}
-
 [sub_resource type="Animation" id="Animation_gdssq"]
 resource_name = "hold"
 loop_mode = 1
@@ -56,11 +41,41 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0, 0.5, 1),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 0,
-"values": [Color(0.901124, 0.656453, 0, 1), Color(0.921569, 0, 0.768627, 0.65098), Color(0.901961, 0.654902, 0, 1)]
+"values": [Color(0.901124, 0.656453, 0, 1), Color(0.921569, 0, 0.768627, 1), Color(0.901961, 0.654902, 0, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_eujrl"]
+resource_name = "imperfect_ending"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Hitbox:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.6),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(0, 0, 0, 0.501961), Color(0, 0, 0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_bknd2"]
+resource_name = "perfect_ending"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Hitbox:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(0.901124, 0.656453, 0, 1), Color(0.922064, 0.000155559, 0.768216, 0)]
 }
 
 [sub_resource type="Animation" id="Animation_8w4bb"]
-resource_name = "released"
+resource_name = "imperfect_release"
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -71,15 +86,16 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0, 0.3),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
-"values": [Color(0, 0, 0, 1), Color(0, 0, 0, 0.231373)]
+"values": [Color(0.901961, 0.654902, 0, 1), Color(0, 0, 0, 0.501961)]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_uti7x"]
 _data = {
 "RESET": SubResource("Animation_07vnm"),
-"end": SubResource("Animation_bknd2"),
 "hold": SubResource("Animation_gdssq"),
-"released": SubResource("Animation_8w4bb")
+"imperfect_ending": SubResource("Animation_eujrl"),
+"imperfect_release": SubResource("Animation_8w4bb"),
+"perfect_ending": SubResource("Animation_bknd2")
 }
 
 [node name="TestHoldNote" type="Node" node_paths=PackedStringArray("note_events_container", "note_body", "note_effects", "end_event")]
