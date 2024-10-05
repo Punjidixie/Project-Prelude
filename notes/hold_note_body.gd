@@ -20,11 +20,11 @@ func _process(delta):
 	
 	# If not ended and timed out
 	if not ended and GlobalManager.current_time > (hold_note.end_event.start_time + hold_note.hold_time):
-		ended = true
 		match hold_note.hold_status:
 			HoldNote.HoldStatus.HELD:
 				on_body_released()
 			HoldNote.HoldStatus.RELEASED:
+				ended = true
 				animation_player.play("imperfect_ending")
 	
 func on_body_pressed():

@@ -12,7 +12,6 @@ func get_note_result(delta_time: float) -> Note.NoteResult:
 		return Note.NoteResult.BAD
 
 func get_release_note_result(delta_time: float) -> Note.NoteResult:
-	print(delta_time)
 	if abs(delta_time) < perfect_window * 2:
 		return Note.NoteResult.PERFECT
 	elif abs(delta_time) < good_window * 2:
